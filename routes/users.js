@@ -5,9 +5,9 @@ const router = express.Router();
 
 // 회원가입 API
 router.post("/signup", async (req, res) => {
-    const { email, password,confirm,nickname,description } = req.body;
+    const { email, password, confirm, nickname, description } = req.body;
 
-    const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; 
+    const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     //이메일 형식검사
     const passwordReg = /^.{4,}$/; //password 형식 검사
 
@@ -26,7 +26,7 @@ router.post("/signup", async (req, res) => {
             return res.status(412).json({ errorMessage: "중복된 이메일입니다." });
         }
 
-        const user = await Users.create({ email,password,nickname,description });
+        const user = await Users.create({ email, password, nickname, description });
 
         return res.status(201).json({ message: "회원 가입에 성공하였습니다." });
 
@@ -59,5 +59,18 @@ router.post("/login", async (req, res) => {
         return res.status(400).json({ errorMessage: "로그인에 실패하였습니다." });
     }
 });
+
+//로그아웃
+router.get('/logout', (req, res) => {
+    try {
+        res.setHeader('Set-Cookie', 'login=true; Max-age=0');
+        res.redirect('/login');
+        return res.status(200).json({ message: "로그아웃 성공하였습니다." });
+    }catch (err){
+        return res.status(400).json({ errorMessage: "로그아웃 실패하였습니다." });
+    }
+  });
+
+
 
 module.exports = router;
