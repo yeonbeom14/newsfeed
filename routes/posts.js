@@ -65,7 +65,7 @@ router.get("/posts/:postId", async (req, res) => {
 router.put("/posts/:postId", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { postId } = req.params;
-    const { title, content } = req.body;
+    const { title, content, url } = req.body;
 
     try {
         const updatedPost = await Posts.findOne({ where: { postId } });
@@ -81,12 +81,15 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
         if (!content) {
             return res.status(412).json({ errorMessage: "게시글 내용의 형식이 일치하지 않습니다." });
         }
+        if (!url) {
+            return res.status(412).json({ errorMessage: "Url의 형식이 일치하지 않습니다." });
+        }
         if (userId !== updatedPost.UserId) {
             return res.status(403).json({ errorMessage: "게시글 수정의 권한이 존재하지 않습니다." });
         }
 
         await Posts.update(
-            { title, content },
+            { title, content, url },
             {
                 where: {
                     [Op.and]: [{ postId }, { UserId: userId }],
