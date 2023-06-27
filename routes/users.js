@@ -5,9 +5,9 @@ const router = express.Router();
 
 // 회원가입 API
 router.post("/signup", async (req, res) => {
-    const { email, password,confirm,nickname,description } = req.body;
+    const { email, password, confirm, nickname, description } = req.body;
 
-    const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; 
+    const emailReg = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     //이메일 형식검사
     const passwordReg = /^.{4,}$/; //password 형식 검사
 
@@ -21,12 +21,15 @@ router.post("/signup", async (req, res) => {
         if (!passwordReg.test(password)) {
             return res.status(412).json({ errorMessage: "패스워드 형식이 일치하지 않습니다." });
         }
+        if (!nickname) {
+            return res.status(412).json({ errorMessage: "닉네임 형식이 일치하지 않습니다." });
+        }
         const isExistUser = await Users.findOne({ where: { email } });
         if (isExistUser) {
             return res.status(412).json({ errorMessage: "중복된 이메일입니다." });
         }
 
-        const user = await Users.create({ email,password,nickname,description });
+        const user = await Users.create({ email, password, nickname, description });
 
         return res.status(201).json({ message: "회원 가입에 성공하였습니다." });
 
