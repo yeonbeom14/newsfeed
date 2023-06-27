@@ -74,7 +74,7 @@ router.put("/posts/:postId/comments/:commentId", authMiddleware, async (req, res
         }
 
         const existComments = await Comments.findOne({ where: { commentId } });
-        console.log(existComments)
+
         if (!existComments) {
             return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
         }
