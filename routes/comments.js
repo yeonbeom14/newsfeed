@@ -61,6 +61,11 @@ router.put("/posts/:postId/comments/:commentId", authMiddleware, async (req, res
     const { userId } = res.locals.user;
 
     try {
+        const post = await Posts.findOne({ where: { postId } });
+        if (!post) {
+            return res.status(404).json({ errorMessage: "게시글이 존재하지 않습니다." });
+        }
+
         if (!req.body) {
             return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
         }
@@ -101,7 +106,11 @@ router.delete("/posts/:postId/comments/:commentId", authMiddleware, async (req, 
 
     try {
         const existComments = await Comments.findOne({ where: { commentId } });
-       
+        const post = await Posts.findOne({ where: { postId } });
+        if (!post) {
+            return res.status(404).json({ errorMessage: "게시글이 존재하지 않습니다." });
+        }
+
         if (!existComments) {
             return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
         }
