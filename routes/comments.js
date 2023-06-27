@@ -6,54 +6,81 @@ const router = express.Router();
 
 router.put("/posts/:postId/comments/:commentId", authMiddleware, async (req, res) => {
     const commentId = req.params.commentId;
+    const postId = req.params.postId;
     const { comment } = req.body;
     const { userId } = res.locals.user;
 
     try {
-        if (!userId) return res.status(403).json({ errorMessage: "로그인이 필요한 기능입니다." });
-        if (!id) return res.status(400).json({ errorMessage: "데이터의 형식이 올바르지 않습니다." });
-        if (!comment) return res.status(400).json({ errorMessage: "댓글 내용을 입력해주세요." });
+        if (!req.body) {
+            return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+        }
+        if (!comment) {
+            return res.status(400).json({ errorMessage: "댓글 내용을 입력해주세요." });
+        }
 
         const existComments = await Comments.findOne({ where: { commentId } });
+        const existComments2 = await Comments.findOne({ where: { postId } });
 
-        if (!existComments) return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
-        if (existComments.userId !== userId) return res.status(401).json({ errorMessage: "수정 권한이 없습니다." });
+        if (existComments !== existComments2) {
+            return res.status(404).json({ errorMessage: "댓글이 조회에 실패했습니다." });
+        }
+
+        if (!existComments) {
+            return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
+        }
+
+        if (existComments.userId !== userId) {
+            return res.status(401).json({ errorMessage: "댓글 수정 권한이 없습니다." });
+        }
 
         await Comments.update(
             { comment },
             {
                 where:
                 {
-                    [Op.and]: [{ userId }, { commentId }],
+                    [Op.and]: [{ commentId }, { UserId: userId }],
                 }
             }
         );
         return res.status(200).json({ errorMessage: "댓글을 수정하였습니다." });
     } catch (error) {
-        return res.status(500).json({ error, errorMessage: "서버오류" });
+        return res.status(500).json({ error, errorMessage: "댓글을 수정에 실패하였습니다." });
     }
 });
 
 router.delete("/posts/:postId/comments/:commentId", authMiddleware, async (req, res) => {
     const commentId = req.params.commentId;
+    const postId = req.params.postId;
     const { userId } = res.locals.user;
+
     try {
-        if (!userId) return res.status(403).json({ errorMessage: "로그인이 필요한 기능입니다." });
-        if (!commentId) return res.status(400).json({ errorMessage: "데이터의 형식이 올바르지 않습니다." });
-
         const existComments = await Comments.findOne({ where: { commentId } });
+        const existComments2 = await Comments.findOne({ where: { postId } });
 
-        if (!existComments) return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
-        if (existComments.userId !== userId) return res.status(401).json({ errorMessage: "삭제 권한이 없습니다." });
+        if (existComments !== existComments2) {
+            return res.status(404).json({ errorMessage: "댓글이 조회에 실패했습니다." });
+        }
 
-        await Comments.remove(commentId, userId);
+        if (!existComments) {
+            return res.status(404).json({ errorMessage: "댓글이 존재하지 않습니다." });
+        }
+        if (existComments.userId !== userId) {
+            return res.status(401).json({ errorMessage: "댓글 삭제 권한이 없습니다." });
+        }
+
+        await Comments.destroy({
+            where: {
+                [Op.and]: [{ commentId }, { UserId: userId }],
+            },
+        });
+
 
         return res.status(200).json({ errorMessage: "댓글을 삭제하였습니다." });
     } catch (error) {
-        return res.status(500).json({ error, errorMessage: "서버오류" });
+        return res.status(500).json({ error, errorMessage: "댓글 삭제에 실패하였습니다." });
     }
 }
-)
+);
 
 
 module.exports = router;
