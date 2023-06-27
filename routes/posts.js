@@ -7,7 +7,7 @@ const router = express.Router();
 // 게시글 작성 API
 router.post("/posts", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
-    const { title, content } = req.body;
+    const { title, content, url } = req.body;
     try {
         if (!req.body) {
             return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
@@ -18,9 +18,12 @@ router.post("/posts", authMiddleware, async (req, res) => {
         if (!content) {
             return res.status(412).json({ errorMessage: "게시글 내용의 형식이 일치하지 않습니다." });
         }
+        if (!url) {
+            return res.status(412).json({ errorMessage: "Url의 형식이 일치하지 않습니다." });
+        }
 
         const { nickname } = await Users.findOne({ where: { userId } });
-        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, title, content });
+        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, title, content, url });
         res.status(201).json({ post: createdPost, message: "게시글 작성에 성공하였습니다." });
 
     } catch (err) {
