@@ -86,13 +86,13 @@ router.put("/users", authMiddleware, async (req, res) => {
     try {
         const profile = await Users.findOne({ where: { userId } });
         if (!profile) {
-            return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
+            return res.status(412).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
         if (profile.password !== password) {
-            return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
+            return res.status(412).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
         if (newPassword !== newComfirm) {
-            return res.status(400).json({ errorMessage: "새로운 비밀번호가 일치하지 않습니다." })
+            return res.status(412).json({ errorMessage: "새로운 비밀번호가 일치하지 않습니다." })
         }
 
         await Users.update(
@@ -115,10 +115,10 @@ router.delete("/users", authMiddleware, async (req, res) => {
     try {
         const profile = await Users.findOne({ where: { userId } });
         if (!profile) {
-            return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
+            return res.status(412).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
         if (profile.password !== password) {
-            return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
+            return res.status(412).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
 
         await Users.destroy({

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,18 +9,22 @@
     <style>
 
     </style>
+   
 </head>
+
 <body>
     <div align="center" class="login-wrapper">
         <h2>회원가입</h2>
-        <form method="post" action="서버의url" id="regist-form">
-            <p><input type="text" placeholder="Email"></p>
-            <p><input type="password" placeholder="Password"></p>
-            <p><input type="comfirmPassword" placeholder="Password 확인"></p>
-            <p><input type="introduce" placeholder="한줄 소개글"></p>
-            <p><input type="nickname" placeholder="Nickname"></p>
-            <button>Regist</button>
-        </form>
+        <div id="regist-form">
+            <p><input id="Email" type="text" placeholder="Email"></p>
+            <p><input id="Password" type="password" placeholder="Password"></p>
+            <p><input id="confirm" type="comfirmPassword" placeholder="Password 확인"></p>
+            <p><input id="decreption" type="introduce" placeholder="한줄 소개글"></p>
+            <p><input id="nickname" type="nickname" placeholder="Nickname"></p>
+            <button onclick=registUser()>Regist</button>
+        </div>
     </div>
+    <script  src="../ajax/registUser.js"></script>
 </body>
+
 </html>
