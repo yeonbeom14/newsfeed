@@ -1,9 +1,7 @@
-'use strict';
-
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { Users } = require("../../models");
-const authMiddleware = require("../../middlewares/auth-middleware");
+const { Users } = require("../models");
+const authMiddleware = require("../middlewares/auth-middleware");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 
@@ -46,7 +44,6 @@ router.post("/signup", async (req, res) => {
 // 로그인 API
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
-
     try {
         const user = await Users.findOne({ where: { email } });
         if (!user) {
@@ -99,12 +96,11 @@ router.put("/users", authMiddleware, async (req, res) => {
     const { password, nickname, description, newPassword, newComfirm } = req.body;
 
     try {
-        const user = await Users.findOne({ where: { userId } });
-        if (!user) {
+        const profile = await Users.findOne({ where: { userId } });
+        if (!profile) {
             return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
-        const match = await bcrypt.compare(password, user.password);
-        if (!match) {
+        if (profile.password !== password) {
             return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
         if (newPassword !== newComfirm) {
@@ -135,15 +131,11 @@ router.delete("/users", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { password } = req.body;
     try {
-        const user = await Users.findOne({ where: { userId } });
-        if (!user) {
+        const profile = await Users.findOne({ where: { userId } });
+        if (!profile) {
             return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
-        if (!password) {
-            return res.status(400).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." })
-        }
-        const match = await bcrypt.compare(password, user.password);
-        if (!match) {
+        if (profile.password !== password) {
             return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
 
