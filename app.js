@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("views", "./views");
 app.set("view engine", "ejs");
 app.use('/', home);
-app.use(cors());
 app.use('/api', [usersRouter, postsRouter, commentsRouter]);
 app.use(express.static(`${__dirname}/`));
 

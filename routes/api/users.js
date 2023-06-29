@@ -114,13 +114,7 @@ router.put("/users", authMiddleware, async (req, res) => {
         if (!passwordReg.test(newPassword)) {
             return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
         }
-        const passwordReg = /^.{4,}$/; //password 형식 검사
-        if (!passwordReg.test(newPassword)) {
-            return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
-        }
-
-        const hashPassword = await bcrypt.hash(newPassword, 5);
-
+        
         const hashPassword = await bcrypt.hash(newPassword, 5);
 
         await Users.update(
