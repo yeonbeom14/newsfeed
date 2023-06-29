@@ -1,7 +1,9 @@
+'use strict';
+
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { Users } = require("../models");
-const authMiddleware = require("../middlewares/auth-middleware");
+const { Users } = require("../../models");
+const authMiddleware = require("../../middlewares/auth-middleware");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 
@@ -44,6 +46,7 @@ router.post("/signup", async (req, res) => {
 // 로그인 API
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
+
     try {
         const user = await Users.findOne({ where: { email } });
         if (!user) {
@@ -96,11 +99,12 @@ router.put("/users", authMiddleware, async (req, res) => {
     const { password, nickname, description, newPassword, newComfirm } = req.body;
 
     try {
-        const profile = await Users.findOne({ where: { userId } });
-        if (!profile) {
+        const user = await Users.findOne({ where: { userId } });
+        if (!user) {
             return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
-        if (profile.password !== password) {
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
             return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
         if (newPassword !== newComfirm) {
@@ -110,6 +114,12 @@ router.put("/users", authMiddleware, async (req, res) => {
         if (!passwordReg.test(newPassword)) {
             return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
         }
+        const passwordReg = /^.{4,}$/; //password 형식 검사
+        if (!passwordReg.test(newPassword)) {
+            return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
+        }
+
+        const hashPassword = await bcrypt.hash(newPassword, 5);
 
         const hashPassword = await bcrypt.hash(newPassword, 5);
 
@@ -131,11 +141,15 @@ router.delete("/users", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { password } = req.body;
     try {
-        const profile = await Users.findOne({ where: { userId } });
-        if (!profile) {
+        const user = await Users.findOne({ where: { userId } });
+        if (!user) {
             return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
-        if (profile.password !== password) {
+        if (!password) {
+            return res.status(400).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." })
+        }
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
             return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
 

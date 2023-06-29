@@ -1,7 +1,9 @@
+'use strict';
+
 const express = require("express");
 const { Op } = require("sequelize");
-const { Posts, Users, Comments } = require("../models");
-const authMiddleware = require("../middlewares/auth-middleware");
+const { Posts, Users, Comments } = require("../../models");
+const authMiddleware = require("../../middlewares/auth-middleware");
 const router = express.Router();
 
 // 댓글 생성 API
