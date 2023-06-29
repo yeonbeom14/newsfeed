@@ -14,7 +14,7 @@
         <h2>Login</h2>
         <form class="login-form">
             <p><input id = "email" type="text" placeholder="Email"></p>
-            <p><input id = "password" type="password" placeholder="Password"></p>
+            <p><input id = "password" type="password" onkeypress="javascript:if(event.keyCode==13){login();}" placeholder="Password"></p>
             <label for="remember-check">
                 <input type="checkbox" id="remember-check">아이디 저장하기
             </label>

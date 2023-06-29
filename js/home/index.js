@@ -12,11 +12,11 @@ const showPosts = () => {
             const temp = document.createElement("div");
             const code = youtubeId(post.url);
             const date = new Date(post.updatedAt).toLocaleString('ko-KR');
-            console.log(date);
+
             temp.innerHTML = `<div class="post" 
-            onclick ="location.href='postDetail.html'">
+            onclick ="location.href='postdetail/${post.postId}'">
                 <div class="card h-100">
-                    <img class="card-img-top" src="https://img.youtube.com/vi/${code}/0.jpg"/>
+                    <img class="card-img-top" src="https://img.youtube.com/vi/${code}/mqdefault.jpg"/>
                         <div class="card-body">
                             <h5 class="card-title">${post.title}</h5>
                             <p class="card-text">${post.Nickname}</p>
