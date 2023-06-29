@@ -12,6 +12,9 @@ router.get("/login", (req, res) => {
 router.get("/signup", (req, res) => {
     res.render("home/signup");
 })
+router.get("/post", (req, res) => {
+    res.render("home/post");
+})
 router.get("/profile", (req, res) => {
     res.render("home/profile");
 })
