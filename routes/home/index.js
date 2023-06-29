@@ -15,5 +15,11 @@ router.get("/signup", (req, res) => {
 router.get("/post", (req, res) => {
     res.render("home/post");
 })
+router.get("/profile", (req, res) => {
+    res.render("home/profile");
+})
+router.get("/modifyProfile", (req, res) => {
+    res.render("home/modifyProfile");
+})
 
 module.exports = router;
