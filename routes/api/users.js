@@ -1,7 +1,9 @@
+'use strict';
+
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { Users } = require("../models");
-const authMiddleware = require("../middlewares/auth-middleware");
+const { Users } = require("../../models");
+const authMiddleware = require("../../middlewares/auth-middleware");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 
@@ -44,6 +46,7 @@ router.post("/signup", async (req, res) => {
 // 로그인 API
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
+
     try {
         const user = await Users.findOne({ where: { email } });
         if (!user) {
