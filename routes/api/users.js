@@ -79,7 +79,7 @@ router.get('/logout', (req, res) => {
 });
 
 //프로필 조회 api
-router.get("/users", authMiddleware, async (req, res) => {
+router.get("/profile", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     try {
         const profile = await Users.findOne({ where: { userId } });
@@ -94,7 +94,7 @@ router.get("/users", authMiddleware, async (req, res) => {
 });
 
 //프로필 수정 api
-router.put("/users", authMiddleware, async (req, res) => {
+router.put("/profile", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { password, nickname, description, newPassword, newComfirm } = req.body;
 
@@ -131,7 +131,7 @@ router.put("/users", authMiddleware, async (req, res) => {
 });
 
 //프로필 삭제 api
-router.delete("/users", authMiddleware, async (req, res) => {
+router.delete("/profile", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { password } = req.body;
     try {
