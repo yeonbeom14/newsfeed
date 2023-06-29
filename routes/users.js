@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
 const authMiddleware = require("../middlewares/auth-middleware");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
 
 // 회원가입 API
 router.post("/signup", async (req, res) => {
@@ -20,7 +21,7 @@ router.post("/signup", async (req, res) => {
             return res.status(412).json({ errorMessage: "패스워드가 일치하지 않습니다." });
         }
         if (!passwordReg.test(password)) {
-            return res.status(412).json({ errorMessage: "패스워드 형식이 일치하지 않습니다." });
+            return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
         }
         if (!nickname) {
             return res.status(412).json({ errorMessage: "닉네임 형식이 일치하지 않습니다." });
@@ -30,8 +31,9 @@ router.post("/signup", async (req, res) => {
             return res.status(412).json({ errorMessage: "중복된 이메일입니다." });
         }
 
-        const user = await Users.create({ email, password, nickname, description });
-
+        //암호화
+        const hashPassword = await bcrypt.hash(req.body.password, 5);
+        const user = await Users.create({ email, password: hashPassword, nickname, description });
         return res.status(201).json({ message: "회원 가입에 성공하였습니다." });
 
     } catch (err) {
@@ -44,12 +46,12 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await Users.findOne({ where: { email } });
-
-        if (!user || password !== user.password) {
-            res.status(412).json({
-                errorMessage: "이메일 또는 패스워드를 확인해주세요.",
-            });
-            return;
+        if (!user) {
+            return res.status(412).json({ errorMessage: "이메일 또는 비밀번호를 확인해주세요." });
+        }
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(412).json({ errorMessage: "이메일 또는 비밀번호를 확인해주세요." });
         }
 
         const token = jwt.sign(
@@ -61,6 +63,15 @@ router.post("/login", async (req, res) => {
 
     } catch (err) {
         return res.status(400).json({ errorMessage: "로그인에 실패하였습니다." });
+    }
+});
+
+//로그아웃
+router.get('/logout', (req, res) => {
+    try {
+        return res.clearCookie('Authorization').json({ message: "로그아웃 성공하였습니다." });
+    } catch (err) {
+        return res.status(400).json({ errorMessage: "로그아웃 실패하였습니다." });
     }
 });
 
@@ -83,20 +94,27 @@ router.get("/users", authMiddleware, async (req, res) => {
 router.put("/users", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { password, nickname, description, newPassword, newComfirm } = req.body;
+
     try {
         const profile = await Users.findOne({ where: { userId } });
         if (!profile) {
-            return res.status(412).json({ errorMessage: "존재하지 않는 유저입니다." });
+            return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
         if (profile.password !== password) {
-            return res.status(412).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
+            return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
         if (newPassword !== newComfirm) {
             return res.status(412).json({ errorMessage: "새로운 비밀번호가 일치하지 않습니다." })
         }
+        const passwordReg = /^.{4,}$/; //password 형식 검사
+        if (!passwordReg.test(newPassword)) {
+            return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
+        }
+
+        const hashPassword = await bcrypt.hash(newPassword, 5);
 
         await Users.update(
-            { password: newPassword, nickname, description },
+            { password: hashPassword, nickname, description },
             {
                 where: { UserId: userId }
             }
@@ -115,10 +133,10 @@ router.delete("/users", authMiddleware, async (req, res) => {
     try {
         const profile = await Users.findOne({ where: { userId } });
         if (!profile) {
-            return res.status(412).json({ errorMessage: "존재하지 않는 유저입니다." });
+            return res.status(400).json({ errorMessage: "존재하지 않는 유저입니다." });
         }
         if (profile.password !== password) {
-            return res.status(412).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
+            return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
 
         await Users.destroy({
@@ -130,9 +148,5 @@ router.delete("/users", authMiddleware, async (req, res) => {
         return res.status(400).json({ errorMessage: "프로필 삭제에 실패하였습니다." });
     }
 });
-
-
-
-
 
 module.exports = router;
