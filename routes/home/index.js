@@ -15,6 +15,9 @@ router.get("/signup", (req, res) => {
 router.get("/post", (req, res) => {
     res.render("home/post");
 })
+router.get("/postdetail/:postId", (req, res) => {
+    res.render("home/postdetail");
+})
 router.get("/profile", (req, res) => {
     res.render("home/profile");
 })

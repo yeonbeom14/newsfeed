@@ -24,8 +24,8 @@ router.post("/posts", authMiddleware, async (req, res) => {
             return res.status(412).json({ errorMessage: "Url의 형식이 일치하지 않습니다." });
         }
 
-        const { nickname } = await Users.findOne({ where: { userId } });
-        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, title, content, url });
+        const { nickname, description } = await Users.findOne({ where: { userId } });
+        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, Description: description, title, content, url });
         res.status(201).json({ post: createdPost, message: "게시글 작성에 성공하였습니다." });
 
     } catch (err) {
@@ -50,6 +50,7 @@ router.get("/posts", async (req, res) => {
 // 게시글 상세 조회 API
 router.get("/posts/:postId", async (req, res) => {
     const { postId } = req.params;
+
     try {
         const post = await Posts.findOne({ where: { postId } });
 

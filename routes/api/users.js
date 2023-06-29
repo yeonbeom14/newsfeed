@@ -107,18 +107,25 @@ router.put("/profile", authMiddleware, async (req, res) => {
         if (!match) {
             return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
-        if (newPassword !== newComfirm) {
-            return res.status(412).json({ errorMessage: "새로운 비밀번호가 일치하지 않습니다." })
+        if (newPassword) {
+            if (newPassword !== newComfirm) {
+                return res.status(412).json({ errorMessage: "새로운 비밀번호가 일치하지 않습니다." })
+            }
+            const passwordReg = /^.{4,}$/; //password 형식 검사
+            if (!passwordReg.test(newPassword)) {
+                return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
+            }
         }
-        const passwordReg = /^.{4,}$/; //password 형식 검사
-        if (!passwordReg.test(newPassword)) {
-            return res.status(412).json({ errorMessage: "비밀번호 형식이 일치하지 않습니다." });
-        }
-        
-        const hashPassword = await bcrypt.hash(newPassword, 5);
+
+        const hashPassword = (!newPassword) ? newPassword : await bcrypt.hash(newPassword, 5);
+
+        let updateValues = {};
+        if (hashPassword) updateValues.password = hashPassword;
+        if (nickname) updateValues.nickname = nickname;
+        if (description) updateValues.description = description;
 
         await Users.update(
-            { password: hashPassword, nickname, description },
+            updateValues,
             {
                 where: { UserId: userId }
             }
