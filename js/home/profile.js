@@ -8,11 +8,13 @@ function profileLoad() {
         .then((res) => res.json())
         .then((data) => {
             let rows = data["profile"];
+            localStorage.setItem('userNickname', rows.nickname);
+            localStorage.setItem('userDescription', rows.description);
             let temp_html = `<div class="profileCard" align="left">
                         <p>Email:${rows.email}</p>
                         <p>NickName:${rows.nickname}</p>
                         <p>한줄소개글:${rows.description}</p>
-                        <button id="profileDeleteBtn" onclick="profileDelete ()" type="button">회원탈퇴</button><button onclick ="location.href='modifyProfile'">정보수정</button>
+                        <button id="profileDeleteBtn" onclick="profileDelete ()" type="button">회원탈퇴</button><button onclick ="location.href='modifyprofile'">정보수정</button>
                        </div>`;
             document
                 .querySelector(".login-wrapper")

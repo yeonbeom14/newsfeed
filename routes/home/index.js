@@ -18,11 +18,14 @@ router.get("/post", (req, res) => {
 router.get("/postdetail/:postId", (req, res) => {
     res.render("home/postdetail");
 })
+router.get("/modifypost/:postId", (req, res) => {
+    res.render("home/modifypost");
+})
 router.get("/profile", (req, res) => {
     res.render("home/profile");
 })
-router.get("/modifyProfile", (req, res) => {
-    res.render("home/modifyProfile");
+router.get("/modifyprofile", (req, res) => {
+    res.render("home/modifyprofile");
 })
 
 module.exports = router;
