@@ -1,6 +1,7 @@
 'use strict';
 const postDeleteBtn = document.querySelector("#postDeleteBtn")
 
+
 function youtubeId(url) {
     var tag = "";
     if (url) {
@@ -22,6 +23,8 @@ function postLoad() {
         .then((res) => res.json())
         .then((data) => {
             let rows = data["post"];
+            let likeArr=JSON.parse(rows.like)
+            let likeCount=likeArr.length
             const code = youtubeId(rows.url);
             const date = new Date(rows.updatedAt).toLocaleString('ko-KR');
             localStorage.setItem('postTitle', rows.title);
@@ -45,6 +48,12 @@ function postLoad() {
             document
                 .querySelector(".post-wrapper")
                 .insertAdjacentHTML("beforeend", temp_html)
+            $('.likeBtn').empty()
+            let temp_html2=`<button id="like" onclick="Like()">좋아요</button>
+                            <p>${likeCount}</p>`
+            document
+             .querySelector(".likeBtn")
+             .insertAdjacentHTML("beforeend", temp_html2)
         })
         .catch((err) => {
             console.log(err)
@@ -71,6 +80,33 @@ function postDelete() {
         })
         .catch((err) => {
             console.error("게시글 삭제에 실패했습니다.");
+        })
+}
+
+function Like() {
+    const pathname = window.location.pathname;
+    const path = pathname.substring(pathname.lastIndexOf('/') + 1);
+    fetch(`/api/posts/${path}/like`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            let rows = data["post"];
+            let likeArr=JSON.parse(rows.like)
+            let likeCount=likeArr.length
+            $('.likeBtn').empty()
+            let temp_html=`<button id="like" onclick="Like()">좋아요</button>
+                           <p>${likeCount}</p>
+                           `;
+            document
+             .querySelector(".likeBtn")
+             .insertAdjacentHTML("beforeend", temp_html)
+        })
+        .catch((err) => {
+            console.error(err);
         })
 }
 
