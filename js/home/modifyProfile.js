@@ -9,6 +9,9 @@ const password = document.querySelector("#password"),
 
 modifyProfileBtn.addEventListener("click", modifyProfile);
 
+nickname.value = localStorage.getItem("userNickname");
+description.value = localStorage.getItem("userDescription");
+
 function modifyProfile() {
     const req = {
         password: password.value,

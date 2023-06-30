@@ -24,6 +24,9 @@ function postLoad() {
             let rows = data["post"];
             const code = youtubeId(rows.url);
             const date = new Date(rows.updatedAt).toLocaleString('ko-KR');
+            localStorage.setItem('postTitle', rows.title);
+            localStorage.setItem('postUrl', rows.url);
+            localStorage.setItem('postContent', rows.content);
             let temp_html = `<iframe width="1280" height="720" src="https://www.youtube.com/embed/${code}"
                             title="YouTube video player" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -37,7 +40,7 @@ function postLoad() {
                                 <p>작성시간 : ${date}</p>
                                 <p>내용 : ${rows.content}</p>
                             </div>
-                            <button onclick="location.href='modifyPost.html'">수정</button>
+                            <button onclick="location.href='../modifypost/${rows.postId}'">수정</button>
                             <input type="submit" value="삭제" onclick="if(!confirm('정말로 삭제하시겠습니까?')){return false;} postDelete()" />`;
             document
                 .querySelector(".post-wrapper")
