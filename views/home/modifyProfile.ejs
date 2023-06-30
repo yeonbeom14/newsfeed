@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/home/modifyProfile.js" defer></script>
     <title>프로필 수정</title>
     <style>
 
     </style>
 </head>
-
 <body>
-    <div align="center" class="login-wrapper">
+    <div align="center" class="Profile-wrapper">
         <h2>프로필 수정</h2>
-        <form method="put" action="서버의url" id="modifyProfile-form">
+        <form id="modifyProfile-form">
             <p><input id="password" type="password" placeholder="Password"></p>
-            <p><input id="nickname" type="nickname" placeholder="nickname"></p>
-            <p><input id="description" type="description" placeholder="한줄 소개글"></p>
-            <p><input id="newPasswor" type="newPasswor" placeholder="newPasswor"></p>
-            <p><input id="newComfirm" type="newComfirm" placeholder="newComfirm"></p>
+            <p><input id="nickname" type="text" placeholder="nickname"></p>
+            <p><input id="description" type="text" placeholder="한줄 소개글"></p>
+            <p><input id="newPassword" type="password" placeholder="newPassword"></p>
+            <p><input id="newComfirm" type="password" placeholder="newComfirm"></p>
             <button id="modifyProfileBtn" type="button">modify</button>
         </form>
     </div>
 </body>
-
 </html>

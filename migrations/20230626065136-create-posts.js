@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -19,6 +19,10 @@ module.exports = {
         onDelete: 'CASCADE', // 만약 Users 모델의 userId가 삭제되면, Posts 모델의 데이터가 삭제됩니다.
       },
       Nickname: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      Description: {
         allowNull: false,
         type: Sequelize.STRING,
       },
