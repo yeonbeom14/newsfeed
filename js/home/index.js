@@ -55,13 +55,15 @@ function userLoad() {
 
                 let temp_html = `<button class="logoutBtn" onclick = logout()>로그아웃</button>
                             <button class="postBtn" onclick ="location.href='post'">추천 유튜브 등록</button>
-                            <button class="profileBtn" onclick ="location.href='profile'">${rows.email} ⧸ ${rows.nickname}</button>`
+                            <button class="profileBtn" onclick ="location.href='profile'">${rows.email} ⧸ ${rows.nickname}</button>
+                            <button class="categoryBtn" onclick ="location.href='category?cate=none'">카테고리</button>`
                 document
                     .querySelector(".btn-wrapper")
                     .insertAdjacentHTML("beforeend", temp_html)
             } else {
                 let temp_html = `<button class="loginBtn" onclick ="location.href='login'">로그인</button>
-                            <button class="registBtn" onclick ="location.href='signup'">회원가입</button>`
+                            <button class="registBtn" onclick ="location.href='signup'">회원가입</button>
+                            <button class="categoryBtn" onclick ="location.href='category?cate=none'">카테고리</button>`
                 document
                     .querySelector(".btn-wrapper")
                     .insertAdjacentHTML("beforeend", temp_html)
