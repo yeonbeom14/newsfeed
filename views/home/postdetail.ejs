@@ -7,16 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/js/home/postdetail.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>게시물 상세페이지</title>
+    <title>유튜브 시청 페이지</title>
     <style>
         .posted {
             display: flex;
             flex-direction: column;
             border: 1px solid black;
-            width: 550px;
+            width: 1220px;
             height: 400px;
-            padding: 10px;
-            margin: 10px;
+            padding: 5px 30px;
+            margin: 30px;
         }
 
         .info {
@@ -24,46 +24,68 @@
             flex-direction: row;
         }
 
+        #postNick {
+            margin-right: 40px;
+        }
+
+        .btn {
+            cursor: pointer;
+            padding: 8px 15px;
+            margin: 0px 10px;
+        }
+
         .postcomment {
             display: flex;
             flex-direction: row;
             border: 1px solid black;
-            width: 550px;
-            padding: 10px;
-            margin: 10px;
+            width: 1000px;
+            padding: 20px;
+            margin: 40px;
         }
 
-        .commentInput {
+        #loginNickname {
+            width: 100px;
+        }
+
+        #commentInput {
             margin-left: 40px;
             margin-right: 40px;
-            width: 300px;
+            width: 700px;
         }
 
-        .commentlist {
+        #commentlist {
             display: flex;
             flex-direction: column;
             border: 1px solid black;
-            width: 550px;
-            padding: 10px;
-            margin: 10px;
+            width: 1000px;
+            padding: 20px;
+            margin: 40px;
         }
 
         .comment {
             display: flex;
             flex-direction: row;
-            border: 1px solid black;
-            margin-top: 5px;
-            margin-bottom: 5px;
+            line-height: 35px;
+            border: 1px solid gainsboro;
+            margin: 10px;
         }
 
-        .nick {
-            margin-right: 10px;
+        .cmtnick {
+            width: 90px;
         }
 
         .postedcomment {
             margin-left: 40px;
             margin-right: 40px;
-            width: 300px;
+            width: 700px;
+        }
+
+        .cmtbtn {
+            margin: 5px;
+        }
+
+        .likeBtn {
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -71,35 +93,18 @@
 <body>
     <div align="center">
         <div class="post-wrapper">
-            <h2>게시물 상세</h2>
+            <h1>유튜브 시청 페이지</h1>
         </div>
         <div class="likeBtn">
             <button id="like" onclick="Like()">좋아요</button>
         </div>
         <div class="postcomment">
-            <p>
-                로그인 닉네임<input class="commentInput" type="text" placeholder="댓글을 입력하세요"><button>댓글등록</button>
-            </p>
+            <div id=loginNickname></div>
+            <input id="commentInput" type="text" onkeypress="javascript:if(event.keyCode==13){commentPost();}"
+                placeholder="댓글을 입력하세요"><button id="commentBtn">댓글등록</button>
         </div>
-        <div class="commentlist">
-            <div class="comment">
-                <div>작성자 닉네임</div>
-                <div class="postedcomment">댓글 내용</div>
-                <button onclick="location.href='modifyComment.html'">수정</button>
-                <button>삭제</button>
-            </div>
-            <div class="comment">
-                <div>작성자 닉네임</div>
-                <div class="postedcomment">댓글 내용</div>
-                <button onclick="location.href='modifyComment.html'">수정</button>
-                <button>삭제</button>
-            </div>
-            <div class="comment">
-                <div>작성자 닉네임</div>
-                <div class="postedcomment">댓글 내용</div>
-                <button onclick="location.href='modifyComment.html'">수정</button>
-                <button>삭제</button>
-            </div>
+        <div id="commentlist">
+            <div>댓글 목록</div>
         </div>
     </div>
 </body>

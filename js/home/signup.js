@@ -28,6 +28,7 @@ function signup() {
         .then((res) => res.json())
         .then((res) => {
             if (res.message) {
+                alert(res.message);
                 location.href = "/login";
             } else {
                 alert(res.errorMessage);

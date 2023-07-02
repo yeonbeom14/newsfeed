@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,26 +12,49 @@
     <title>main</title>
 
     <style>
+        .btn-wrapper {
+            max-width: 1600px;
+            margin: 30px auto;
+        }
+
         .loginBtn {
             cursor: pointer;
+            margin-right: 10px;
+            padding: 8px 15px;
         }
+
+        .logoutBtn {
+            cursor: pointer;
+            padding: 8px 15px;
+        }
+
         .registBtn {
             cursor: pointer;
+            padding: 8px 15px;
         }
+
         .profileBtn {
             float: right;
-            margin-right: 10px; 
+            margin-right: 20px;
             cursor: pointer;
+            padding: 8px 15px;
         }
+
         .postBtn {
-            float: right; 
+            float: right;
             cursor: pointer;
+            padding: 8px 15px;
         }
-        .sixSite {
+
+        .mainback {
+            background-color: rgb(231, 58, 58);
             text-align: center;
+            font-size: 60px;
+            color: aliceblue;
             border: 1px solid black;
-            padding: 30px;
-            margin: 30px;
+            padding: 60px;
+            margin: 30px auto;
+            max-width: 1600px;
         }
 
         .mycards {
@@ -39,19 +63,27 @@
             max-width: 1400px;
         }
 
+        .post {
+            cursor: pointer;
+        }
+
+        .card-title {
+            height: 60px;
+        }
+
         .timestamp {
             color: gray;
         }
     </style>
 </head>
+
 <body>
-    <button class="loginBtn" onclick ="location.href='login'">로그인</button>
-    <button class="registBtn" onclick ="location.href='signup'">회원가입</button>
-    <button class="postBtn" onclick ="location.href='post'">게시글작성</button>
-    <button class="profileBtn" onclick ="location.href='profile'">프로필</button>
-    <div class="sixSite">6수코딩 사이트</div>
+    <div class="btn-wrapper">
+    </div>
+    <div class="mainback">유튜브 뉴스 피드</div>
     <div class="mycards">
-    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box"></div>
+        <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box"></div>
     </div>
 </body>
+
 </html>
