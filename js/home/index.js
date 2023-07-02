@@ -24,6 +24,8 @@ const showPosts = () => {
             const temp = document.createElement("div");
             const code = youtubeId(post.url);
             const date = new Date(post.updatedAt).toLocaleString('ko-KR');
+            let likeArr = JSON.parse(post.like)
+            let likeCount = likeArr.length
 
             temp.innerHTML = `<div class="post" 
             onclick ="location.href='postdetail/${post.postId}'">
@@ -33,6 +35,7 @@ const showPosts = () => {
                             <h5 class="card-title">${post.title}</h5>
                             <p class="card-text">${post.Nickname}</p>
                             <p class="timestamp">${date}</p>
+                            <p class="likeCount">좋아요-${likeCount}</p>
                         </div>
                     </div>
                 </div>`;
@@ -41,6 +44,44 @@ const showPosts = () => {
     });
 }
 showPosts();
+
+function likePost(){
+    let likeList=[]
+
+    getPost.then((posts) => {
+        posts.forEach((post)=> {
+            let likeArr = JSON.parse(post.like)
+            post.likeCount = likeArr.length
+            likeList.push(post)
+        })
+
+        likeList.sort(function(a,b){
+            return b.likeCount-a.likeCount
+        })
+
+        $("#cards-box").empty()
+        
+        likeList.forEach((post)=>{
+            const temp = document.createElement("div");
+            const code = youtubeId(post.url);
+            const date = new Date(post.updatedAt).toLocaleString('ko-KR');
+
+            temp.innerHTML = `<div class="post" 
+            onclick ="location.href='postdetail/${post.postId}'">
+                <div class="card h-100">
+                    <img class="card-img-top" src="https://img.youtube.com/vi/${code}/mqdefault.jpg"/>
+                        <div class="card-body">
+                            <h5 class="card-title">${post.title}</h5>
+                            <p class="card-text">${post.Nickname}</p>
+                            <p class="timestamp">${date}</p>
+                            <p class="likeCount">좋아요-${post.likeCount}</p>
+                        </div>
+                    </div>
+                </div>`;
+            document.querySelector("#cards-box").append(temp);
+        })
+    })
+}
 
 function userLoad() {
     fetch("/api/profile", {
@@ -56,14 +97,17 @@ function userLoad() {
                 let temp_html = `<button class="logoutBtn" onclick = logout()>로그아웃</button>
                             <button class="postBtn" onclick ="location.href='post'">추천 유튜브 등록</button>
                             <button class="profileBtn" onclick ="location.href='profile'">${rows.email} ⧸ ${rows.nickname}</button>
-                            <button class="categoryBtn" onclick ="location.href='category?cate=none'">카테고리</button>`
+                            <button class="categoryBtn" onclick ="location.href='category?cate=none'">카테고리</button>
+                            <button class="likeBtn" onclick ="likePost()">인기순</button>`
                 document
                     .querySelector(".btn-wrapper")
                     .insertAdjacentHTML("beforeend", temp_html)
             } else {
                 let temp_html = `<button class="loginBtn" onclick ="location.href='login'">로그인</button>
                             <button class="registBtn" onclick ="location.href='signup'">회원가입</button>
-                            <button class="categoryBtn" onclick ="location.href='category?cate=none'">카테고리</button>`
+                            <button class="categoryBtn" onclick ="location.href='category?cate=none'">카테고리</button>
+                            <button class="likeBtn" onclick ="likePost()">인기순</button>`
+                document
                 document
                     .querySelector(".btn-wrapper")
                     .insertAdjacentHTML("beforeend", temp_html)
