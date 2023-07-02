@@ -49,7 +49,7 @@ router.get("/posts/:postId/comments", async (req, res) => {
             order: [['createdAt', 'DESC']]
         });
 
-        res.json({ data: commentList });
+        res.json({ "comments": commentList });
     } catch (err) {
         return res.status(400).json({ errorMessage: "댓글 조회에 실패하였습니다." });
     }
@@ -94,7 +94,7 @@ router.put("/posts/:postId/comments/:commentId", authMiddleware, async (req, res
                 }
             }
         );
-        return res.status(200).json({ errorMessage: "댓글을 수정하였습니다." });
+        return res.status(200).json({ message: "댓글을 수정하였습니다." });
     } catch (error) {
         return res.status(500).json({ error, errorMessage: "댓글을 수정에 실패하였습니다." });
     }
@@ -126,8 +126,7 @@ router.delete("/posts/:postId/comments/:commentId", authMiddleware, async (req, 
             },
         });
 
-
-        return res.status(200).json({ errorMessage: "댓글을 삭제하였습니다." });
+        return res.status(200).json({ message: "댓글을 삭제하였습니다." });
     } catch (error) {
         return res.status(500).json({ error, errorMessage: "댓글 삭제에 실패하였습니다." });
     }

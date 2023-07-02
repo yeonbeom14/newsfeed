@@ -54,7 +54,6 @@ router.get("/posts/:postId", async (req, res) => {
 
     try {
         const post = await Posts.findOne({ where: { postId } });
-        console.log(post.like)
         if (!post) {
             return res.status(400).json({ errorMessage: "게시글이 존재하지 않습니다." });
         }
@@ -140,14 +139,11 @@ router.put("/posts/:postId/like", authMiddleware, async (req, res) => {
         const updatedPost = await Posts.findOne({ where: { postId } });
         let likes = JSON.parse(updatedPost.like)
         const index = likes.indexOf(userId)
-        console.log(index)
         if (!updatedPost) {
             return res.status(404).json({ errorMessage: "게시글이 존재하지 않습니다." });
         }
         if (index !== -1) {
-            console.log(likes)
             likes.splice(index, 1);
-            console.log(likes)
             let like = JSON.stringify(likes);
             await Posts.update(
                 { like },
@@ -159,11 +155,9 @@ router.put("/posts/:postId/like", authMiddleware, async (req, res) => {
         }
         if (index == -1) {
             likes.push(userId)
-            console.log(likes)
         }
         if (likes) {
             let like = JSON.stringify(likes)
-            console.log(like)
 
             await Posts.update(
                 { like },

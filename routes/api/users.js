@@ -159,7 +159,7 @@ router.delete("/profile", authMiddleware, async (req, res) => {
             where: { UserId: userId }
         });
 
-        return res.status(200).json({ message: "프로필을 삭제하였습니다." });
+        return res.status(200).json({ message: "회원 탈퇴 완료하였습니다." });
     } catch (err) {
         return res.status(400).json({ errorMessage: "프로필 삭제에 실패하였습니다." });
     }

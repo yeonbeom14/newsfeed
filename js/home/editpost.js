@@ -3,15 +3,15 @@
 const title = document.querySelector("#titleInput"),
     url = document.querySelector("#URLinput"),
     content = document.querySelector("#contentInput"),
-    putBtn = document.querySelector("#putBtn");
+    editPostBtn = document.querySelector("#editPostBtn");
 
-putBtn.addEventListener("click", put);
+editPostBtn.addEventListener("click", editPost);
 
 title.value = localStorage.getItem("postTitle");
 url.value = localStorage.getItem("postUrl");
 content.value = localStorage.getItem("postContent");
 
-function put() {
+function editPost() {
     const req = {
         title: title.value,
         url: url.value,
