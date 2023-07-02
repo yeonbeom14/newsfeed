@@ -4,23 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>main</title>
+    <title>category</title>
     <style>
-        .loginBtn {
-            cursor: pointer;
-        }
-        .registBtn {
-            cursor: pointer;
-        }
-        .profileBtn {
-            float: right;
-            margin-right: 10px; 
-            cursor: pointer;
-        }
-        .postBtn {
-            float: right; 
-            cursor: pointer;
-        }
         .sixSite {
             text-align: center;
             border: 1px solid black;
@@ -65,10 +50,15 @@
     </style>
 </head>
 <body>
-    <button class="loginBtn" onclick ="location.href='login.html'">로그인</button>
-    <button class="registBtn" onclick ="location.href='regist.html'">회원가입</button>
-    <button class="postBtn" onclick ="location.href='post.html'">게시글작성</button>
-    <button class="profileBtn" onclick ="location.href='profile.html'">프로필</button>
+    <p>카테고리 목록 :  <select id="categoryInput" type="text" >
+        <option name="categoryInput" value="">없음</option>
+        <option name="categoryInput" value="인기"> 인기 </option>
+        <option name="categoryInput" value="음악"> 음악 </option>
+        <option name="categoryInput" value="학습"> 학습 </option>
+        <option name="categoryInput" value="기타"> 기타 </option>
+        </select>
+    </p>
+
     <div class="sixSite">6수코딩 사이트</div>
     <div class="postList">
         <div class="post" onclick ="location.href='postDetail.html'">

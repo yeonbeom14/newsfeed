@@ -11,10 +11,10 @@ function profileLoad() {
             localStorage.setItem('userNickname', rows.nickname);
             localStorage.setItem('userDescription', rows.description);
             let temp_html = `<div class="profileCard" align="left">
-                        <p>Email:${rows.email}</p>
-                        <p>NickName:${rows.nickname}</p>
-                        <p>한줄소개글:${rows.description}</p>
-                        <button id="profileDeleteBtn" onclick="profileDelete ()" type="button">회원탈퇴</button><button onclick ="location.href='modifyprofile'">정보수정</button>
+                        <p>이메일 : ${rows.email}</p>
+                        <p>닉네임 : ${rows.nickname}</p>
+                        <p>소개글 : ${rows.description}</p>
+                        <button class="btn" id="profileDeleteBtn" onclick="profileDelete ()" type="button">회원탈퇴</button><button class="btn" onclick ="location.href='editprofile'">정보수정</button>
                        </div>`;
             document
                 .querySelector(".login-wrapper")
@@ -43,6 +43,7 @@ function profileDelete() {
         .then((res) => res.json())
         .then((res) => {
             if (res.message) {
+                alert(res.message);
                 location.href = "/";
             } else {
                 alert(res.errorMessage);

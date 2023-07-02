@@ -10,7 +10,8 @@ const router = express.Router();
 router.post("/posts", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { category, title, content, url } = req.body;
-    console.log(category, "1");
+    const likearr = []
+
     try {
         if (!req.body) {
             return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
@@ -29,9 +30,7 @@ router.post("/posts", authMiddleware, async (req, res) => {
         }
         console.log(category, "2");
         const { nickname, description } = await Users.findOne({ where: { userId } });
-        console.log(category, "3");
-        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, Description: description, category, title, content, url });
-        console.log(category, "4");
+        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, Description: description,category, title, content, url, like: JSON.stringify(likearr) });
         res.status(201).json({ post: createdPost, message: "게시글 작성에 성공하였습니다." });
 
     } catch (err) {
@@ -59,7 +58,7 @@ router.get("/category/:categoryName", async (req, res) => {
     try {
         console.log(categoryName, "11");
         const category = await Posts.findAll({
-            where: {category : categoryName },
+            where: { category: categoryName },
             //attributes: ['postId','Nickname','Description','category','title','url','createdAt'],
             attributes: { exclude: ['content'] },
             order: [['createdAt', 'DESC']]
@@ -78,7 +77,6 @@ router.get("/posts/:postId", async (req, res) => {
 
     try {
         const post = await Posts.findOne({ where: { postId } });
-
         if (!post) {
             return res.status(400).json({ errorMessage: "게시글이 존재하지 않습니다." });
         }
@@ -155,5 +153,49 @@ router.delete("/posts/:postId", authMiddleware, async (req, res) => {
         return res.status(400).json({ errorMessage: "게시글 삭제에 실패하였습니다." });
     }
 });
+
+//좋아요 PUT
+router.put("/posts/:postId/like", authMiddleware, async (req, res) => {
+    const { userId } = res.locals.user;
+    const { postId } = req.params;
+    try {
+        const updatedPost = await Posts.findOne({ where: { postId } });
+        let likes = JSON.parse(updatedPost.like)
+        const index = likes.indexOf(userId)
+        if (!updatedPost) {
+            return res.status(404).json({ errorMessage: "게시글이 존재하지 않습니다." });
+        }
+        if (index !== -1) {
+            likes.splice(index, 1);
+            let like = JSON.stringify(likes);
+            await Posts.update(
+                { like },
+                {
+                    where: { PostId: postId }
+                });
+            const post = await Posts.findOne({ where: { postId } });
+            return res.json({ "post": post })
+        }
+        if (index == -1) {
+            likes.push(userId)
+        }
+        if (likes) {
+            let like = JSON.stringify(likes)
+
+            await Posts.update(
+                { like },
+                {
+                    where: { PostId: postId }
+                })
+            const post = await Posts.findOne({ where: { postId } });
+            return res.json({ "post": post })
+        }
+
+    } catch (err) {
+        return res.status(400).json({ errorMessage: "좋아요에 실패하였습니다." });
+    }
+});
+
+
 
 module.exports = router;

@@ -1,5 +1,17 @@
 'use strict';
 
+function youtubeId(url) {
+    var tag = "";
+    if (url) {
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+        var matchs = url.match(regExp);
+        if (matchs) {
+            tag += matchs[7];
+        }
+        return tag;
+    }
+}
+
 const getPost = fetch("/api/posts")
     .then((response) => response.json())
     .then((data) => {
@@ -30,14 +42,53 @@ const showPosts = () => {
 }
 showPosts();
 
-function youtubeId(url) {
-    var tag = "";
-    if (url) {
-        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-        var matchs = url.match(regExp);
-        if (matchs) {
-            tag += matchs[7];
-        }
-        return tag;
-    }
+function userLoad() {
+    fetch("/api/profile", {
+        method: "GET"
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            let rows = data["profile"];
+            if (rows) {
+                localStorage.setItem('userEmail', rows.email);
+                localStorage.setItem('userNickname', rows.nickname);
+
+                let temp_html = `<button class="logoutBtn" onclick = logout()>로그아웃</button>
+                            <button class="postBtn" onclick ="location.href='post'">추천 유튜브 등록</button>
+                            <button class="profileBtn" onclick ="location.href='profile'">${rows.email} ⧸ ${rows.nickname}</button>`
+                document
+                    .querySelector(".btn-wrapper")
+                    .insertAdjacentHTML("beforeend", temp_html)
+            } else {
+                let temp_html = `<button class="loginBtn" onclick ="location.href='login'">로그인</button>
+                            <button class="registBtn" onclick ="location.href='signup'">회원가입</button>`
+                document
+                    .querySelector(".btn-wrapper")
+                    .insertAdjacentHTML("beforeend", temp_html)
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+            console.error("불러오기에 실패했습니다.");
+        })
+}
+userLoad();
+
+function logout() {
+    fetch("/api/logout", {
+        method: "GET"
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.message) {
+                location.href = "/";
+                alert(res.message);
+            } else {
+                alert(res.errorMessage);
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+            console.error("로그아웃에 실패했습니다.");
+        })
 }

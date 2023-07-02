@@ -1,57 +1,67 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/js/home/post.js" defer></script>
-    <title>게시물작성</title>
+    <title>추천 유튜브 등록</title>
     <style>
-        .post {
-            margin-top: 20px;
-        }
         #post-form {
             display: flex;
             flex-direction: column;
             border: 1px solid black;
-            width: 70%;
+            width: 530px;
             height: 500px;
-
+            vertical-align: text-top;
             margin: 0 auto;
             padding-left: 20px;
         }
-        .contentInput {
-            width: 400px;
-            height: 300px;
+
+        #contentInput {
+            width: 500px;
+            height: 250px;
         }
-        .titleInput {
-            width: 400px;
-        }
-        .URLinput {
+
+        #titleInput {
             width: 300px;
         }
 
+        #URLinput {
+            width: 400px;
+        }
+
+        #postBtn {
+            cursor: pointer;
+            padding: 8px 15px;
+            margin-top: 15px;
+        }
     </style>
 </head>
+
 <body>
     <div align="center">
-        <h2>게시물 작성</h2>
+        <h1>추천 유튜브 등록</h1>
         <form align="left" id="post-form">
-        <p>title : <input id="titleInput" type="text" placeholder="제목을 입력하세요"></p>
-        <p>Youtube URL : <input id="URLinput" type="text" placeholder="유튜브 URL을 입력하세요"></p>
-        <p>내용 : <input id="contentInput" type="text" placeholder="내용을 입력하세요"></p>
-        <p>카테고리 :  <select id="categoryInput" type="text" >
-            <option name="없음" value="">없음</option>
-            <option name="인기" value="인기"> 인기 </option>
-            <option name="음악" value="음악"> 음악 </option>
-            <option name="학습" value="학습"> 학습 </option>
-            <option name="기타" value="기타"> 기타 </option>
-            </select>
-        </p>
+            <p>제 목 : <input id="titleInput" type="text" placeholder="제목을 입력하세요"></p>
+            <p>유튜브 URL : <input id="URLinput" type="text" placeholder="유튜브 URL을 입력하세요"></p>
+            <p>내 용 : </p><textarea id="contentInput" type="text" placeholder="내용을 입력하세요"></textarea>
+            <p>카테고리 : <select id="categoryInput" type="text">
+                    <option  value="none">없음</option>
+                    <option  value="music"> 음악 </option>
+                    <option  value="study"> 학습 </option>
+                    <option  value="sport"> 스포츠 </option>
+                    <option  value="entertainer"> 예능 </option>
+                    <option  value="game"> 게임 </option>
+                    <option  value="etc"> 기타 </option>
+                </select>
+            </p>
         </form>
-        <button id ="postBtn">등록하기</button>
+        <button id="postBtn">등록하기</button>
     </div>
-    
-    
+
+
 </body>
+
 </html>
