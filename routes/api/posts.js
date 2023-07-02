@@ -10,6 +10,7 @@ const router = express.Router();
 router.post("/posts", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { title, content, url } = req.body;
+    const likearr = []
     try {
         if (!req.body) {
             return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
@@ -25,7 +26,7 @@ router.post("/posts", authMiddleware, async (req, res) => {
         }
 
         const { nickname, description } = await Users.findOne({ where: { userId } });
-        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, Description: description, title, content, url });
+        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, Description: description, title, content, url, like: JSON.stringify(likearr) });
         res.status(201).json({ post: createdPost, message: "게시글 작성에 성공하였습니다." });
 
     } catch (err) {
@@ -53,7 +54,7 @@ router.get("/posts/:postId", async (req, res) => {
 
     try {
         const post = await Posts.findOne({ where: { postId } });
-
+        console.log(post.like)
         if (!post) {
             return res.status(400).json({ errorMessage: "게시글이 존재하지 않습니다." });
         }
@@ -130,5 +131,54 @@ router.delete("/posts/:postId", authMiddleware, async (req, res) => {
         return res.status(400).json({ errorMessage: "게시글 삭제에 실패하였습니다." });
     }
 });
+
+//좋아요 PUT
+router.put("/posts/:postId/like", authMiddleware, async (req, res) => {
+    const { userId } = res.locals.user;
+    const { postId } = req.params;
+    try {
+        const updatedPost = await Posts.findOne({ where: { postId } });
+        let likes = JSON.parse(updatedPost.like)
+        const index = likes.indexOf(userId)
+        console.log(index)
+        if (!updatedPost) {
+            return res.status(404).json({ errorMessage: "게시글이 존재하지 않습니다." });
+        }
+        if (index !== -1) {
+            console.log(likes)
+            likes.splice(index, 1);
+            console.log(likes)
+            let like = JSON.stringify(likes);
+            await Posts.update(
+                { like },
+                {
+                    where: { PostId: postId }
+                });
+            const post = await Posts.findOne({ where: { postId } });
+            return res.json({ "post": post })
+        }
+        if (index == -1) {
+            likes.push(userId)
+            console.log(likes)
+        }
+        if (likes) {
+            let like = JSON.stringify(likes)
+            console.log(like)
+
+            await Posts.update(
+                { like },
+                {
+                    where: { PostId: postId }
+                })
+            const post = await Posts.findOne({ where: { postId } });
+            return res.json({ "post": post })
+        }
+
+    } catch (err) {
+        return res.status(400).json({ errorMessage: "좋아요에 실패하였습니다." });
+    }
+});
+
+
 
 module.exports = router;
