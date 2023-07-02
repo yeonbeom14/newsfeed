@@ -1,9 +1,8 @@
 'use strict';
+const path = document.location.href.split("=");
+const categoryName = path[1];
 
-
-
-const pathname = window.location.href;
-const categoryName = pathname.substring(pathname.lastIndexOf('Input=') + 6);
+console.log(categoryName);
 
 const getCatgory = fetch(`/api/category/${categoryName}`)
     .then((response) => response.json())
