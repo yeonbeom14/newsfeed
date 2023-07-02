@@ -3,8 +3,8 @@
 const title = document.querySelector("#titleInput"),
     url = document.querySelector("#URLinput"),
     content = document.querySelector("#contentInput"),
+    category = document.querySelector("#categoryInput"),
     postBtn = document.querySelector("#postBtn");
-
 postBtn.addEventListener("click", post);
 
 function post() {
@@ -12,6 +12,7 @@ function post() {
         title: title.value,
         url: url.value,
         content: content.value,
+        category: category.value
     };
 
     fetch("/api/posts", {
