@@ -3,6 +3,7 @@
 const title = document.querySelector("#titleInput"),
     url = document.querySelector("#URLinput"),
     content = document.querySelector("#contentInput"),
+    category = document.querySelector("#categoryInput"),
     editPostBtn = document.querySelector("#editPostBtn");
 
 editPostBtn.addEventListener("click", editPost);
@@ -16,6 +17,7 @@ function editPost() {
         title: title.value,
         url: url.value,
         content: content.value,
+        category: category.value
     };
     const pathname = window.location.pathname;
     const path = pathname.substring(pathname.lastIndexOf('/') + 1);

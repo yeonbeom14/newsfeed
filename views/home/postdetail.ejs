@@ -19,6 +19,12 @@
             margin: 30px;
         }
 
+        #postHome {
+            cursor: pointer;
+            border: 2px solid red;
+            width: 350px;
+        }
+
         .info {
             display: flex;
             flex-direction: row;
@@ -93,13 +99,13 @@
 <body>
     <div align="center">
         <div class="post-wrapper">
-            <h1>유튜브 시청 페이지</h1>
+            <h1 id="postHome" onclick ="location.href='/'">유튜브 시청 페이지</h1>
         </div>
         <div class="likeBtn">
             <button id="like" onclick="Like()">좋아요</button>
         </div>
         <div class="postcomment">
-            <div id=loginNickname></div>
+            <div id="loginNickname"></div>
             <input id="commentInput" type="text" onkeypress="javascript:if(event.keyCode==13){commentPost();}"
                 placeholder="댓글을 입력하세요"><button id="commentBtn">댓글등록</button>
         </div>

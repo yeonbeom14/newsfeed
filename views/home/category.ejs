@@ -12,30 +12,26 @@
     <title>카테고리</title>
 
     <style>
-        .loginBtn {
-            cursor: pointer;
+        .btn-wrapper {
+            max-width: 1500px;
+            margin: 30px auto;
         }
 
-        .registBtn {
+        .cateBtn {
             cursor: pointer;
+            padding: 8px 15px;
         }
 
-        .profileBtn {
-            float: right;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
-        .postBtn {
-            float: right;
-            cursor: pointer;
-        }
-
-        .sixSite {
+        .mainback {
+            background-color: rgb(231, 58, 58);
             text-align: center;
+            font-size: 60px;
+            color: aliceblue;
             border: 1px solid black;
-            padding: 30px;
-            margin: 30px;
+            padding: 60px;
+            margin: 30px auto;
+            max-width: 1500px;
+            cursor: pointer;
         }
 
         .mycards {
@@ -51,17 +47,18 @@
 </head>
 
 <body>
-    <form>
-        <button name="cate" value="none">없음</button>
-        <button name="cate" value="music">음악</button>
-        <button name="cate" value="study">학습</button>
-        <button name="cate" value="sport">스포츠</button>
-        <button name="cate" value="entertainer">예능</button>
-        <button name="cate" value="game">게임</button>
-        <button name="cate" value="etc">기타</button>
-    </form>
-
-    <div class="sixSite">6수코딩 사이트</div>
+    <div class="btn-wrapper">
+        <form>
+            <button class="cateBtn" name="cate" value="none">없음</button>
+            <button class="cateBtn" name="cate" value="music">음악</button>
+            <button class="cateBtn" name="cate" value="study">학습</button>
+            <button class="cateBtn" name="cate" value="sport">스포츠</button>
+            <button class="cateBtn" name="cate" value="entertainer">예능</button>
+            <button class="cateBtn" name="cate" value="game">게임</button>
+            <button class="cateBtn" name="cate" value="etc">기타</button>
+        </form>
+    </div>
+    <div class="mainback" onclick ="location.href='/'">유튜브 뉴스 피드</div>
     <div class="mycards">
         <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box"></div>
     </div>

@@ -2,8 +2,6 @@
 const path = document.location.href.split("=");
 const categoryName = path[1];
 
-console.log(categoryName);
-
 const getCatgory = fetch(`/api/category/${categoryName}`)
     .then((response) => response.json())
     .then((data) => {
@@ -46,6 +44,3 @@ function youtubeId(url) {
         return tag;
     }
 }
-
-
-

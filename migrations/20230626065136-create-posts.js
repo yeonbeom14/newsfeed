@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       category: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING
       },
       title: {
