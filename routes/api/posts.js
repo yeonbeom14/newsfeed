@@ -28,9 +28,8 @@ router.post("/posts", authMiddleware, async (req, res) => {
         if (!url) {
             return res.status(412).json({ errorMessage: "Url의 형식이 일치하지 않습니다." });
         }
-        console.log(category, "2");
         const { nickname, description } = await Users.findOne({ where: { userId } });
-        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, Description: description,category, title, content, url, like: JSON.stringify(likearr) });
+        const createdPost = await Posts.create({ UserId: userId, Nickname: nickname, Description: description, category, title, content, url, like: JSON.stringify(likearr) });
         res.status(201).json({ post: createdPost, message: "게시글 작성에 성공하였습니다." });
 
     } catch (err) {
@@ -56,17 +55,13 @@ router.get("/posts", async (req, res) => {
 router.get("/category/:categoryName", async (req, res) => {
     const { categoryName } = req.params;
     try {
-        console.log(categoryName, "11");
         const category = await Posts.findAll({
             where: { category: categoryName },
-            //attributes: ['postId','Nickname','Description','category','title','url','createdAt'],
             attributes: { exclude: ['content'] },
             order: [['createdAt', 'DESC']]
         });
-        console.log(categoryName, "12");
         return res.json({ "category": category });
     } catch (err) {
-        console.log(categoryName, "3");
         return res.status(400).json({ errorMessage: "게시글 조회에 실패하였습니다." });
     }
 });
@@ -91,7 +86,7 @@ router.get("/posts/:postId", async (req, res) => {
 router.put("/posts/:postId", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { postId } = req.params;
-    const { title, content, url } = req.body;
+    const { category, title, content, url } = req.body;
 
     try {
         const updatedPost = await Posts.findOne({ where: { postId } });
@@ -100,6 +95,9 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
         }
         if (!req.body) {
             return res.status(412).json({ errorMessage: "데이터 형식이 올바르지 않습니다." });
+        }
+        if (!category) {
+            return res.status(412).json({ errorMessage: "게시글 카테고리의 형식이 일치하지 않습니다." });
         }
         if (!title) {
             return res.status(412).json({ errorMessage: "게시글 제목의 형식이 일치하지 않습니다." });
@@ -115,7 +113,7 @@ router.put("/posts/:postId", authMiddleware, async (req, res) => {
         }
 
         await Posts.update(
-            { title, content, url },
+            { category, title, content, url },
             {
                 where: {
                     [Op.and]: [{ postId }, { UserId: userId }],
