@@ -107,6 +107,7 @@ router.put("/profile", authMiddleware, async (req, res) => {
         if (!match) {
             return res.status(400).json({ errorMessage: "비밀번호가 일치하지 않습니다." })
         }
+
         if (newPassword) {
             if (newPassword !== newComfirm) {
                 return res.status(412).json({ errorMessage: "새로운 비밀번호가 일치하지 않습니다." })
