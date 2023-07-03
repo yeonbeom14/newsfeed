@@ -108,7 +108,6 @@ function userLoad() {
                             <button class="categoryBtn" onclick ="location.href='category?cate=none'">카테고리</button>
                             <button class="likeBtn" onclick ="likePost()">인기순</button>`
                 document
-                document
                     .querySelector(".btn-wrapper")
                     .insertAdjacentHTML("beforeend", temp_html)
             }

@@ -7,7 +7,7 @@ const getCatgory = fetch(`/api/category/${categoryName}`)
     .then((data) => {
         return data.category;
     });
-    console.log(categoryName);
+console.log(categoryName);
 
 const showCatgory = () => {
     getCatgory.then((category) => {
